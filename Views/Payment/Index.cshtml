@@ -1,0 +1,60 @@
+﻿@model IEnumerable<PaymentViewModel>
+
+<h2>Ödeme Listesi</h2>
+
+<div class="mb-3">
+    <a class="btn btn-success" asp-action="Add">Yeni Ödeme Ekle</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ödeme ID</th>
+            <th>Fatura ID</th>
+            <th>Tutar</th>
+            <th>Ödeme Tarihi</th>
+            <th>Ödeme Yöntemi</th>
+            <th>Notlar</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.Id</td>
+                <td>@payment.InvoiceId</td>
+                <td>@payment.Amount.ToString("C")</td>
+                <td>@payment.PaymentDate.ToShortDateString()</td>
+                <td>@payment.PaymentMethod</td>
+                <td>@payment.Notes</td>
+                <td>
+                    <a class="btn btn-info" asp-controller="InvoiceDetail" asp-action="Details" asp-route-invoiceId="@payment.InvoiceId">Fatura</a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@payment.Id">Düzenle</a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@payment.Id">Sil</button>
+
+                    <div class="modal fade" id="deleteModal-@payment.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@payment.Id" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel-@payment.Id">Ödeme Sil</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Ödeme ID: @payment.Id - Tutar: @payment.Amount.ToString("C") silinecek. Devam etmek istiyor musunuz?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                    <form asp-action="Delete" method="post">
+                                        <input type="hidden" name="id" value="@payment.Id" />
+                                        <button type="submit" class="btn btn-danger">Sil</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

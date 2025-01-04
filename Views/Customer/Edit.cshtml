@@ -1,0 +1,43 @@
+﻿@model CustomerViewModel
+
+<h2>Müşteri Düzenle</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div class="form-group">
+        <label for="Name">Adı</label>
+        <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Phone">Telefon</label>
+        <input type="text" id="Phone" name="Phone" class="form-control" value="@Model.Phone" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="AddressStreet">Sokak</label>
+        <input type="text" id="AddressStreet" name="AddressStreet" class="form-control" value="@Model.AddressStreet" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="AddressCity">Şehir</label>
+        <input type="text" id="AddressCity" name="AddressCity" class="form-control" value="@Model.AddressCity" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="AddressState">Eyalet</label>
+        <input type="text" id="AddressState" name="AddressState" class="form-control" value="@Model.AddressState" required />
+    </div>
+
+    <div class="form-group">
+        <label for="AddressPostalCode">Posta Kodu</label>
+        <input type="text" id="AddressPostalCode" name="AddressPostalCode" class="form-control" value="@Model.AddressPostalCode" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

@@ -1,0 +1,37 @@
+﻿@model StockMovementViewModel
+
+<h2>Stok Hareketini Düzenle</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="form-group">
+        <label asp-for="ProductId">Ürün</label>
+        @Html.DropDownListFor(
+                 model => model.ProductId,
+                 Model.Products,
+                 "Ürün Seçiniz",
+                 new { @class = "form-control", required = "required" }
+                 )
+        <span asp-validation-for="ProductId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="MovementType" class="form-label">Hareket Türü</label>
+        <select id="MovementType" name="MovementType" class="form-select" required>
+            <option value="In" selected="@(Model.MovementType == "Giriş")">Giriş</option>
+            <option value="Out" selected="@(Model.MovementType == "Çıkış")">Çıkış</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="Quantity" class="form-label">Miktar</label>
+        <input type="number" id="Quantity" name="Quantity" class="form-control" value="@Model.Quantity" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="Note" class="form-label">Not</label>
+        <textarea id="Note" name="Note" class="form-control">@Model.Note</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

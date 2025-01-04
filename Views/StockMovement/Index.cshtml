@@ -1,0 +1,98 @@
+﻿@model IEnumerable<StockMovementViewModel>
+
+<h2>Stok Hareketleri</h2>
+<div class="mb-3">
+    <a class="btn btn-success" asp-action="Add">Yeni Stok Hareketi</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ürün</th>
+            <th>Hareket Türü</th>
+            <th>Tarih</th>
+            <th>Miktar</th>
+            <th>Not</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movement in Model)
+        {
+            <tr>
+                <td>@movement.ProductName</td>
+                <td>
+                    @if (movement.MovementType == "In")
+                    {
+                        <span>Giriş</span>
+                    }
+                    else if (movement.MovementType == "Out")
+                    {
+                        <span>Çıkış</span>
+                    }
+                    else
+                    {
+                        <span>@movement.MovementType</span>
+                    }
+                </td>
+                <td>@movement.Date.ToShortDateString()</td>
+                <td>@movement.Quantity</td>
+                <td>
+                    @if (movement.Note == "Initial stock")
+                    {
+                        <span>Başlangıç Stoğu</span>
+                    }
+                    else
+                    {
+                        <span>@movement.Note</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@movement.Id">Düzenle</a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-id="@movement.Id" data-name="@movement.MovementType">
+                        Sil
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Stok Hareketini Sil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong id="movementTypeName"></strong> hareketini silmek istediğinizden emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" id="movementId" name="id" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var movementId = button.getAttribute('data-id');
+            var movementType = button.getAttribute('data-name');
+
+            var modalMovementId = document.getElementById('movementId');
+            var modalMovementType = document.getElementById('movementTypeName');
+
+            modalMovementId.value = movementId;
+            modalMovementType.textContent = movementType;
+        });
+    </script>
+}

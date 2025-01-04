@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CustomerViewModel>
+
+<h2>Müşteri Listesi</h2>
+<div class="mb-3">
+    <a class="btn btn-success" asp-action="Add">Yeni Müşteri Ekle</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Adı</th>
+            <th>Telefon</th>
+            <th>Email</th>
+            <th>İndirim Oranı</th>
+            <th>Bakiye</th>
+            <th>Adres</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>@customer.Name</td>
+                <td>@customer.Phone</td>
+                <td>@customer.Email</td>
+                <td>@customer.DiscountRate</td>
+                <td>@customer.RemainingBalances</td>
+                <td>@($"{customer.AddressStreet}, {customer.AddressCity}, {customer.AddressState}, {customer.AddressPostalCode}")</td>
+                <td>
+                    <a class="btn btn-secondary" asp-controller="Invoice" asp-action="Add" asp-route-customerId="@customer.Id">Fatura Ekle</a>
+                    <a class="btn btn-info" asp-controller="Payment" asp-action="Add" asp-route-customerId="@customer.Id">Ödeme Ekle</a>
+                    <a class="btn btn-primary" asp-controller="Customer" asp-action="Edit" asp-route-id="@customer.Id">Düzenle</a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@customer.Id" data-name="@customer.Name">
+                        Sil
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Müşteriyi Sil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong id="deleteCustomerName"></strong> adlı müşteriyi silmek istediğinizden emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" id="deleteCustomerId" name="id" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var customerId = button.getAttribute('data-id');
+        var customerName = button.getAttribute('data-name');
+
+        document.getElementById('deleteCustomerId').value = customerId;
+        document.getElementById('deleteCustomerName').textContent = customerName;
+    });
+</script>

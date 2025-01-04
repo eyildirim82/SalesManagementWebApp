@@ -1,0 +1,97 @@
+﻿@model IEnumerable<InvoiceViewModel>
+
+<h2>Fatura Listesi</h2>
+
+<div class="mb-3">
+    <a class="btn btn-success" asp-action="Add">Yeni Fatura Ekle</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fatura ID</th>
+            <th>Müşteri</th>
+            <th>Tür</th>
+            <th>Tarih</th>
+            <th>Son Ödeme Tarihi</th>
+            <th>Durum</th>
+            <th>Toplam Tutar</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var invoice in Model)
+        {
+            <tr>
+                <td>@invoice.Id</td>
+                <td>@invoice.CustomerName</td>
+                <td>
+                    @if (invoice.Type == "Sale")
+                    {
+                        @:Satış
+                    }
+                    else if (invoice.Type == "Purchase")
+                    {
+                        @:Satın Alma
+                    }
+                    else if (invoice.Type == "Return")
+                    {
+                        @:İade
+                    }
+                    else
+                    {
+                        @:Bilinmiyor
+                    }
+                </td>
+                <td>@invoice.Date.ToShortDateString()</td>
+                <td>@(invoice.DueDate.HasValue ? invoice.DueDate.Value.ToShortDateString() : "N/A")</td>
+                <td>
+                    @if (invoice.Status == "Paid")
+                    {
+                        @:Ödendi
+                    }
+                    else if (invoice.Status == "Unpaid")
+                    {
+                        @:Ödenmedi
+                    }
+                    else if (invoice.Status == "Partial Paid")
+                    {
+                        @:Kısmi Ödeme
+                    }
+                    else
+                    {
+                        @:Bilinmiyor
+                    }
+                </td>
+                <td>@invoice.TotalAmount.ToString("C")</td>
+                <td>
+                    <a class="btn btn-info" asp-controller="InvoiceDetail" asp-action="Details" asp-route-invoiceId="@invoice.Id">Detaylar</a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@invoice.Id">Düzenle</a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@invoice.Id">Sil</button>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal-@invoice.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@invoice.Id" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel-@invoice.Id">Faturayı Sil</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Fatura ID: @invoice.Id - Toplam Tutar: @invoice.TotalAmount.ToString("C") silinecek. Devam etmek istediğinizden emin misiniz?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                    <form asp-action="Delete" method="post">
+                                        <input type="hidden" name="id" value="@invoice.Id" />
+                                        <button type="submit" class="btn btn-danger">Sil</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

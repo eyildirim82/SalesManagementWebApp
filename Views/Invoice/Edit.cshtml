@@ -1,0 +1,65 @@
+﻿@model InvoiceViewModel
+
+<h2>Fatura Düzenle</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label for="CustomerId" class="form-label">Müşteri ID</label>
+        <input type="number" id="CustomerId" name="CustomerId" class="form-control" value="@Model.CustomerId" readonly />
+        <span asp-validation-for="CustomerId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="Type" class="form-label">Fatura Türü</label>
+        <select id="Type" name="Type" class="form-select" required>
+            <option value="Sale" selected="@(Model.Type == "Sale")">Satış</option>
+            <option value="Purchase" selected="@(Model.Type == "Purchase")">Satın Alma</option>
+            <option value="Return" selected="@(Model.Type == "Return")">İade</option>
+        </select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="TotalAmount" class="form-label">Toplam Tutar</label>
+        <input type="number" id="TotalAmount" name="TotalAmount" class="form-control" step="0.01" value="@Model.TotalAmount" required />
+        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="ExchangeRate" class="form-label">Döviz Kuru</label>
+        <input type="number" id="ExchangeRate" name="ExchangeRate" class="form-control" step="0.0001" value="@Model.ExchangeRate" required />
+        <span asp-validation-for="ExchangeRate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="DiscountRate" class="form-label">İndirim Oranı</label>
+        <input type="number" id="DiscountRate" name="DiscountRate" class="form-control" step="0.01" value="@Model.DiscountRate" required />
+        <span asp-validation-for="DiscountRate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="DueDate" class="form-label">Son Ödeme Tarihi</label>
+        <input type="date" id="DueDate" name="DueDate" class="form-control" value="@Model.DueDate?.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="DueDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="Status" class="form-label">Durum</label>
+        <select id="Status" name="Status" class="form-select" required>
+            <option value="Unpaid" selected="@(Model.Status == "Unpaid")">Ödenmedi</option>
+            <option value="Paid" selected="@(Model.Status == "Paid")">Ödendi</option>
+            <option value="Overdue" selected="@(Model.Status == "Cancelled")">İptal Edildi</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="Notes" class="form-label">Notlar</label>
+        <textarea id="Notes" name="Notes" class="form-control">@Model.Notes</textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

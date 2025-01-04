@@ -1,0 +1,33 @@
+﻿@model InvoiceViewModel
+
+<h2>Yeni Fatura Ekle</h2>
+<form asp-action="Add" method="post">
+    <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
+
+    <div class="mb-3">
+        <label for="Type" class="form-label">Fatura Türü</label>
+        <select id="Type" name="Type" class="form-select" required>
+            <option value="Sale" selected="@(Model.Type == "Sale")">Satış</option>
+            <option value="Purchase" selected="@(Model.Type == "Purchase")">Satın Alma</option>
+            <option value="Return" selected="@(Model.Type == "Return")">İade</option>
+        </select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="TotalAmount" class="form-label">Toplam Tutar</label>
+        <input type="number" id="TotalAmount" name="TotalAmount" class="form-control" step="0.01" required />
+        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="Notes" class="form-label">Notlar</label>
+        <textarea id="Notes" name="Notes" class="form-control" required>@Model.Notes</textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" name="Status" value="Unpaid" />
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

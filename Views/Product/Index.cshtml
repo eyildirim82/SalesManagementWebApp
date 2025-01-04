@@ -1,0 +1,75 @@
+﻿@using System.Globalization
+
+@model IEnumerable<ProductViewModel>
+
+<h2>Ürün Listesi</h2>
+
+<div class="mb-3">
+    <a class="btn btn-success" asp-action="Create">Yeni Ürün Ekle</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ürün Adı</th>
+            <th>Kategori Adı</th>
+            <th>Liste Fiyatı</th>
+            <th>Alış Fiyatı</th>
+            <th>Stok</th>
+            <th>Ortalama Satış</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.CategoryName</td>
+                <td>@p.ListPrice.ToString("C", CultureInfo.CreateSpecificCulture("en-US"))</td>
+                <td>@p.PurchasePrices.ToString("C", CultureInfo.CreateSpecificCulture("en-US"))</td>
+                <td>@p.Quantity</td>
+                <td>@p.AvgSales</td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@p.ID">Düzenle</a>
+                    <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@p.ID" data-name="@p.Name">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Ürünü Sil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong id="productName"></strong> adlı ürünü silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" id="productId" name="id" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var productId = button.getAttribute('data-id');
+            var productName = button.getAttribute('data-name');
+
+            document.getElementById('productId').value = productId;
+            document.getElementById('productName').innerText = productName;
+        });
+    </script>
+}
