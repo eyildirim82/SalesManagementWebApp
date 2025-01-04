@@ -10,6 +10,7 @@
             <th>Miktar</th>
             <th>Birim Fiyat</th>
             <th>Satır Toplamı</th>
+            <th>İşlemler</th>
         </tr>
     </thead>
     <tbody>
@@ -21,20 +22,40 @@
                     <td>@detail.Id</td>
                     <td>@detail.ProductName</td>
                     <td>@detail.Quantity</td>
-                    <td>@detail.UnitPrice.ToString("C")</td>
-                    <td>@detail.TotalPrice.ToString("C")</td>
+                    <td>@detail.UnitPrice</td>
+                    <td>@detail.TotalPrice</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm"
+                           asp-controller="InvoiceDetail"
+                           asp-action="Edit"
+                           asp-route-id="@detail.Id">Güncelle</a>
+                        <a class="btn btn-danger btn-sm"
+                           asp-controller="InvoiceDetail"
+                           asp-action="Delete"
+                           asp-route-id="@detail.Id"
+                           onclick="return confirm('Bu detayı silmek istediğinizden emin misiniz?');">Sil</a>
+                    </td>
                 </tr>
             }
         }
         else
         {
             <tr>
-                <td colspan="5" class="text-center">Fatura detayları bulunamadı.</td>
+                <td colspan="6" class="text-center">Fatura detayları bulunamadı.</td>
             </tr>
         }
     </tbody>
 </table>
 
 <div class="mt-3">
-    <a class="btn btn-secondary" asp-controller="Invoice" asp-action="Index">Geri Dön</a>
+    <a class="btn btn-success"
+       asp-controller="InvoiceDetail"
+       asp-action="Add"
+       asp-route-invoiceId="@ViewData["InvoiceID"]">Fatura Detay Ekle</a>
+    <a class="btn btn-secondary"
+       asp-controller="Invoice"
+       asp-action="Index">Geri Dön</a>
 </div>
+
+
+

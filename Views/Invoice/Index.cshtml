@@ -2,14 +2,10 @@
 
 <h2>Fatura Listesi</h2>
 
-<div class="mb-3">
-    <a class="btn btn-success" asp-action="Add">Yeni Fatura Ekle</a>
-</div>
-
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Fatura ID</th>
+            <th>Fatura No.</th>
             <th>Müşteri</th>
             <th>Tür</th>
             <th>Tarih</th>
@@ -78,7 +74,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Fatura ID: @invoice.Id - Toplam Tutar: @invoice.TotalAmount.ToString("C") silinecek. Devam etmek istediğinizden emin misiniz?
+                                    @invoice.TotalAmount.ToString("C") tutarında @invoice.Id no'lu fatura silinecek. Devam etmek istediğinizden emin misiniz?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>

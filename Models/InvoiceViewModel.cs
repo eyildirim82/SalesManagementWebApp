@@ -11,7 +11,7 @@
         public string Status { get; set; } // Invoice Status
         public decimal ExchangeRate { get; set; } // Exchange Rate
         public decimal DiscountRate { get; set; } // Discount Rate
-        public string Notes { get; set; } // Notes about the invoice
+        public string? Notes { get; set; } // Notes about the invoice
         public decimal TotalAmount { get; set; } // Total Amount of the Invoice
         public bool IsDeleted { get; set; } // Soft delete status
     }

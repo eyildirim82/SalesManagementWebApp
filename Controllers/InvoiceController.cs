@@ -20,11 +20,11 @@ namespace SalesManagementWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add(int? customerId = null)
+        public IActionResult Add(int customerId)
         {
             var model = new InvoiceViewModel
             {
-                CustomerId = customerId ?? 0, 
+                CustomerId = customerId,
                 Date = DateTime.Now,
                 DueDate = DateTime.Now.AddDays(30),
                 Status = "Unpaid",
@@ -45,9 +45,10 @@ namespace SalesManagementWebApp.Controllers
                     model.DueDate = DateTime.Now.AddDays(30);
                     model.Status = "Unpaid";
 
-                    _invoiceRepository.AddInvoice(model);
+                    int newInvoiceId = _invoiceRepository.AddInvoice(model);
                     TempData["Message"] = "Fatura başarıyla eklendi!";
-                    return RedirectToAction("Index");
+
+                    return RedirectToAction("Add", "InvoiceDetail", new { invoiceId = newInvoiceId });
                 }
                 catch (Exception ex)
                 {

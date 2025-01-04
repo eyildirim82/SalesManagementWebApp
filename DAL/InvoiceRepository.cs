@@ -45,7 +45,7 @@ public class InvoiceRepository
         return invoices;
     }
 
-    public void AddInvoice(InvoiceViewModel model)
+    public int AddInvoice(InvoiceViewModel model)
     {
         using var connection = _connectionFactory.CreateConnection();
         connection.Open();
@@ -68,6 +68,7 @@ public class InvoiceRepository
         command.Parameters.Add(outputParam);
 
         command.ExecuteNonQuery();
+        return (int)outputParam.Value; // Fix for CS0029 and CS1002
     }
 
     public InvoiceViewModel GetInvoiceById(int id)

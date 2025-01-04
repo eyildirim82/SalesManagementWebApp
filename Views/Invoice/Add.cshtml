@@ -14,7 +14,7 @@
         <span asp-validation-for="Type" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+@*     <div class="mb-3">
         <label for="TotalAmount" class="form-label">Toplam Tutar</label>
         <input type="number" id="TotalAmount" name="TotalAmount" class="form-control" step="0.01" required />
         <span asp-validation-for="TotalAmount" class="text-danger"></span>
@@ -24,7 +24,7 @@
         <label for="Notes" class="form-label">Notlar</label>
         <textarea id="Notes" name="Notes" class="form-control" required>@Model.Notes</textarea>
         <span asp-validation-for="Notes" class="text-danger"></span>
-    </div>
+    </div> *@
 
     <input type="hidden" name="Status" value="Unpaid" />
 

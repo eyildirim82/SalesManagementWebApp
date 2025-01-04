@@ -1,0 +1,14 @@
+﻿@model InvoiceDetailViewModel
+
+<h2>Fatura Detay</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Fatura Detay Bilgisi</h5>
+        <p class="card-text"><strong>Ürün:</strong> @Model.ProductID</p>
+        <p class="card-text"><strong>Miktar:</strong> @Model.Quantity</p>
+        <p class="card-text"><strong>Birim Fiyat:</strong> @Model.UnitPrice</p>
+        <p class="card-text"><strong>Toplam Fiyat:</strong> @Model.TotalPrice</p>
+
+    </div>
+</div>
